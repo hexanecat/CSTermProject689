@@ -21,7 +21,7 @@ begin
 		, average_hospital_rating
     )
     select
-          p_date_dim_id                         as date_dim_id
+          1                         as date_dim_id
         , s.state_dim_id
 
         , ho.hospital_ownership_dim_id
@@ -62,7 +62,7 @@ begin
               ) * 100000
           , 2
           )                                    as emergency_hospital_access_per_100k
-		, AVG(h.overall_rating_2025) as average_hospital_rating
+		, round(AVG(h.overall_rating_2025),2) as average_hospital_overall_rating
 
     from dbo.state_dim s
     left join dbo.hospital_dim h

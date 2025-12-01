@@ -9,13 +9,12 @@ begin
     perform etl.log_etl_event(
         'load_hospital_ownership_dim',
         'dbo.hospital_ownership_dim',
-        'i',
+        'I',
         0,
         'started',
         'started loading hospital_ownership_dim from staging.hospital.',
         null
     );
-	
     insert into dbo.hospital_ownership_dim (
         hospital_ownership_group_unscrubbed,
         ownership_group
@@ -41,7 +40,7 @@ begin
     perform etl.log_etl_event(
         'load_hospital_ownership_dim',
         'dbo.hospital_ownership_dim',
-        'i',
+        'I',
         v_rows_inserted,
         'success',
         'completed loading hospital_ownership_dim.',
