@@ -14,19 +14,19 @@ The data flow life cycle looks something like this
    -standardize key values
    -handle null values
    -handle clean values for typed fields like zip codes
-3)insert into the corresponding dim tables
-   -we need to pivot the county staging table since the table is rolled up different
-   -we need to insert into hospital_dim and map county_bands based on values
-   -we need to insert into hospital ownership dim based on values mapped from the corresponding map table
-   -we need to insert into hospital type dim based on values mapped from corresponding map data
-   -we need to insert into state_dim for any new/updated values that were coming in
-   -we need to show the type SCD2 for county_dim for when we get updated records existing counties
-   -we need to show the type SCD3 for hospital_dim for when we get new data, and we push the older data to prior record (2024) and new to current (2025)
-4)insert into corresponding fact tables
-   -hospital_access_fact
-     -has grain per hospital, per hospital type per county. This gives us a good look at the hospitals that we want to look at close while also giving us county attributes for further analysis
-   -state_ownership_access_fact
-     -has grain per state per ownership. I want to see these type of relationships to see what hospitals have what type of states per ownership
+3)insert into the corresponding dim tables  
+   -we need to pivot the county staging table since the table is rolled up different  
+   -we need to insert into hospital_dim and map county_bands based on values  
+   -we need to insert into hospital ownership dim based on values mapped from the corresponding map table  
+   -we need to insert into hospital type dim based on values mapped from corresponding map data  
+   -we need to insert into state_dim for any new/updated values that were coming in  
+   -we need to show the type SCD2 for county_dim for when we get updated records existing counties  
+   -we need to show the type SCD3 for hospital_dim for when we get new data, and we push the older data to prior record (2024) and new to current (2025)  
+4)insert into corresponding fact tables  
+   -hospital_access_fact  
+     -has grain per hospital, per hospital type per county. This gives us a good look at the hospitals that we want to look at close while also giving us county attributes for further analysis  
+   -state_ownership_access_fact  
+     -has grain per state per ownership. I want to see these type of relationships to see what hospitals have what type of states per ownership  
 
 
 **SCHEMA DESIGN
