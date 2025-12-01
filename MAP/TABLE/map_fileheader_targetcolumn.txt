@@ -1,0 +1,9 @@
+CREATE TABLE map.header_targetcolumn(
+    id              SERIAL PRIMARY KEY,           -- or INTEGER AUTOINCREMENT
+    dataset_name    VARCHAR(50) NOT NULL,        -- e.g. 'hospital'
+    source_column   VARCHAR(255) NOT NULL,       -- e.g. 'Facility ID'
+    target_column   VARCHAR(255) NOT NULL,       -- e.g. 'facility_id'
+    is_active       BOOLEAN NOT NULL DEFAULT TRUE
+
+
+);

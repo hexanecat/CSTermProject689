@@ -1,0 +1,6 @@
+CREATE TABLE map.state_code (
+    state_code    CHAR(2) PRIMARY KEY,
+    state_name    VARCHAR(100) NOT NULL,
+    census_region VARCHAR(50),
+    current_flag  CHAR(1) DEFAULT 'Y'
+);
