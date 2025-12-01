@@ -21,7 +21,7 @@ begin
 		, average_hospital_rating
     )
     select
-          1                         as date_dim_id
+          p_date_dim_id                         as date_dim_id
         , s.state_dim_id
 
         , ho.hospital_ownership_dim_id
