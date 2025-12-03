@@ -38,7 +38,8 @@ insert into staging.county (
 	from dock.county s
 	group by s.fips_code
 		   , s.state_code
-		   , s.county_name;
+		   , s.county_name
+	order by s.fips_code; --i want to sort by fips code for more stability 
 		   
 
  -- capture number of rows updated

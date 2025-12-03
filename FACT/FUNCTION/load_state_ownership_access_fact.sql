@@ -62,7 +62,7 @@ begin
               ) * 100000
           , 2
           )                                    as emergency_hospital_access_per_100k
-		, round(AVG(h.overall_rating_2025),2) as average_hospital_overall_rating
+		, AVG(h.overall_rating_2025) as average_hospital_rating
 
     from dbo.state_dim s
     left join dbo.hospital_dim h

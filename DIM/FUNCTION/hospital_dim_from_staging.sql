@@ -10,13 +10,11 @@ begin
 	 set
         --start by moving current values to prior year
 		--since we should be pretending that the next time we load data with updated data it should be the current year
-        ownership_group_2024          = d.ownership_group_2025,
         emergency_flag_2024           = d.emergency_flag_2025,
         birthing_friendly_flag_2024   = d.birthing_friendly_flag_2025,
         overall_rating_2024           = d.overall_rating_2025,
 
         --now lets set the current year values from staging
-        ownership_group_2025          = s.ownership_group,
         emergency_flag_2025           = case
                                             when s.emergency_flag = 1 then true
                                             when s.emergency_flag = 0 then false
@@ -62,12 +60,10 @@ begin
         , zip_code
         , county_name
         --current year scd type 3 values
-        , ownership_group_2025
         , emergency_flag_2025
         , birthing_friendly_flag_2025
         , overall_rating_2025
         --scd type 3 prior year values
-        , ownership_group_2024
         , emergency_flag_2024
         , birthing_friendly_flag_2024
         , overall_rating_2024
@@ -82,8 +78,6 @@ begin
         , s.zip_code
         , s.county_parish
 		--SCD type 3 values
-        , s.ownership_group                           as ownership_group_2025
-
         , case 
               when s.emergency_flag = 1 then true
               when s.emergency_flag = 0 then false
@@ -102,7 +96,6 @@ begin
               else null
           end                                         as overall_rating_2025
 		  --make prior year null on initial load for now 
-        , null                                        as ownership_group_2024
         , null                                        as emergency_flag_2024
         , null                                        as birthing_friendly_flag_2024
         , null                                        as overall_rating_2024
