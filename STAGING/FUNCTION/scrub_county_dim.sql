@@ -19,6 +19,8 @@ begin
 
 	--move values with non numeric values into the infirmary table
 	--made a simple is numeric function to handle this
+	--want to log the entire row data as semi strcutured within single cell
+	--jack mentioned that was a good idea and i found some json func inside postgres that does it
     with moved as (
         insert into staging.county_infirmary (row_data, reason)
         select
@@ -38,6 +40,8 @@ begin
           )
         returning 1
     )
+	
+    --i want to keep track of the bad rows that we have for the sake of loggingg
     select count(*) into v_rows_bad
     from moved;
 

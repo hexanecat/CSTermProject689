@@ -4,7 +4,7 @@ language plpgsql
 as $$
 declare
     v_rows_processed integer := 0;
-	v_rows_bad       integer := 0;
+    v_rows_bad       integer := 0;
 begin
     -- log the start of the scrub
     perform etl.log_etl_event(
@@ -18,12 +18,17 @@ begin
     );
 
     -- ensure the zip is 5 chars and not anything more
+    --WORK ON HANDLING BAD ZIP CODE VALUES 
     update staging.hospital h
     set zip_code = substring(h.zip_code from 1 for 5)
     where h.zip_code is not null
       and h.processed_flag = 0;
+  
+    
 
-    -- update emergency flags per the emergency services values given
+
+
+  -- update emergency flags per the emergency services values given
     update staging.hospital h
     set emergency_flag = m.standardized_flag
     from map.emergency_service_map m
@@ -31,13 +36,14 @@ begin
       and h.processed_flag = 0;
 
     --reject the record and put into infirmary if it hits this
+    --what this is basically telling us is to capture rows that have a map
     update staging.hospital h
     set emergency_flag = null
     where h.processed_flag = 0
       and h.emergency_flag is distinct from 1
       and h.emergency_flag is distinct from 0;
-	
-	--we need to handle staging.hospital_infirmary
+
+    --we need to handle staging.hospital_infirmary
     with bad_rows as (
         select h.*,
                'invalid emergency flag value found, unmapped source value' as reason
@@ -86,7 +92,8 @@ begin
     where h.birthing_friendly_designation = m.source_value
       and h.processed_flag = 0;
 	  
-	--if the birthing friendly designation not match from 
+   --if the birthing friendly designation not match from the calues in the lookup go ahead and get rid of those too
+   --FIGURE THIS PIECE OUT TOOO
 
     -- hospital ownership buckets
     update staging.hospital h

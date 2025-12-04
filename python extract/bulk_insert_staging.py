@@ -42,7 +42,7 @@ def log_results(engine, processName, rowCnt, targetTable, fileName, action_type,
         raise
 
 #again we want to do column mappings based on the dynamic value that we set per table so that is why
-#we are not hardcoing anything here
+#we are not hardcoing anything here everything is going to be in the columns that we are fetching here
 def get_column_map(engine, dataset_name: str) -> dict:
     query = """
         SELECT source_column, target_column
@@ -64,14 +64,14 @@ def truncate_staging_tables(engine):
         print(f"Error: {e}")
 
 #function to insert data into staging
-def insert_data_into_staging(engine, df, targetTable, fileName, processName):
+def insert_data_into_staging(engine, df, targetTable, fileName, processName,targetSchema):
     processName = "insert " + fileName + " into " + targetTable
     rowCnt = 0
     try:
         with engine.begin() as conn:
             df.to_sql(
                 name= targetTable,
-                schema="staging",
+                schema=targetSchema,
                 con=conn,
                 if_exists="append",
                 index=False,
@@ -133,8 +133,10 @@ def main():
     #start inserting data into the staging table
     #in my eyes if data does not even get into staging that is something that we need to work with a client on
     try:    
-        insert_data_into_staging(engine, hospital_stage_df, 'hospital', hospitalFileName, 'insert into staging')
-        insert_data_into_staging(engine, county_stage_df, 'county', countyFileName, 'insert into staging')
+        insert_data_into_staging(engine, hospital_stage_df, 'hospital', hospitalFileName, 'insert into staging','staging')
+        #remember i have to insert into preprocessing table first so that is why we are aiming to do a dock instead
+	#dataflow here will be dock and then it will be staging. python will handle the doc
+	insert_data_into_staging(engine, county_stage_df, 'county', countyFileName, 'insert into ','dock')
     except Exception as e:
         #cast the error message as
         error_msg = str(e)
