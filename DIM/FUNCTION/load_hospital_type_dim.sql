@@ -19,13 +19,13 @@ begin
 	--for scd type one just do a direct insert like this 
     insert into dbo.hospital_type_dim (hospital_type)
     select distinct
-           s.hospital_type
+           s.hospital_type_normalized
     from staging.hospital s
     where s.hospital_type is not null
       and not exists (
           select 1
           from dbo.hospital_type_dim d
-          where d.hospital_type = s.hospital_type
+          where d.hospital_type = s.hospital_type_normalized
       );
 
     get diagnostics v_rows_inserted = row_count;

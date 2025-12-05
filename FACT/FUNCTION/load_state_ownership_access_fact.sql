@@ -1,14 +1,37 @@
-create or replace function dbo.load_state_ownership_access_fact (p_date_dim_id integer)
+create or replace function dbo.load_state_ownership_access_fact (p_full_date date)
 returns void
 language plpgsql
 as $$
 declare
-    v_rows_inserted integer;
+    v_rows_inserted integer:=0;
+	v_date_dim_id integer;
 begin
-    -- clear existing snapshot for this date
+
+	perform etl.log_etl_event(
+	'load state_ownership_access_fact started',
+	'dbo.state_ownership_access_fact',
+	'',
+	v_rows_inserted,
+	'Starting',
+	'Start state_ownership_access_fact snapshot for date_dim_id=' || p_full_date,
+	null
+);
+
+   --lookup the date_dimid for the given date
+   select date_dim_id into v_date_dim_id
+   from dbo.date_dim
+   where full_date = p_full_date;
+   
+   --bad handle it
+   if v_date_dim_id is null then
+      raise exception 'Date % not found in date_dim table. please use a valid date from the time dim', p_full_date;
+   end if;
+   
+   
+   -- clear existing snapshot for this date
     delete
     from dbo.state_ownership_access_fact
-    where date_dim_id = p_date_dim_id;
+    where date_dim_id = (select date_dim_id from dbo.date_dim where full_date = p_full_date );
 
     insert into dbo.state_ownership_access_fact (
           date_dim_id
@@ -21,7 +44,7 @@ begin
 		, average_hospital_rating
     )
     select
-          p_date_dim_id                         as date_dim_id
+          v_date_dim_id                         as date_dim_id
         , s.state_dim_id
 
         , ho.hospital_ownership_dim_id
@@ -70,7 +93,7 @@ begin
     left join staging.hospital sh
         on sh.facility_id = h.facility_id
     left join dbo.hospital_ownership_dim ho
-        on ho.ownership_group = h.ownership_group_2025
+        on ho.ownership_group = sh.ownership_group
     where s.current_flag = 'Y'
     group by
           s.state_dim_id
@@ -85,7 +108,7 @@ begin
         'I',
         v_rows_inserted,
         'success',
-        'Loaded state ownership access snapshot for date_dim_id=' || p_date_dim_id,
+        'Loaded state ownership access snapshot for date_dim_id=' || p_full_date,
         null
     );
 end;

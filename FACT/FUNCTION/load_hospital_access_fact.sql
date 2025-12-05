@@ -1,10 +1,32 @@
-create or replace function dbo.load_hospital_access_fact (p_date_dim_id integer)
+create or replace function dbo.load_hospital_access_fact (p_full_date date)
 returns void language plpgsql as $$
+declare
+    v_rows_inserted integer:=0;
+	v_date_dim_id integer;
 begin
+	perform etl.log_etl_event(
+	'load hospital access fact started',
+	'dbo.state_ownership_access_fact',
+	'',
+	v_rows_inserted,
+	'Starting',
+	'Start hospital_access_fact snapshot for date_dim_id=' || p_full_date,
+	null
+);
+
+   select date_dim_id into v_date_dim_id
+   from dbo.date_dim
+   where full_date = p_full_date;
+   
+   --bad handle it
+   if v_date_dim_id is null then
+      raise exception 'Date % not found in date_dim table. please use a valid date from the time dim', p_full_date;
+   end if;
+   
     -- Clear existing snapshot for this date
     delete
-    from dbo.hospital_access_fact
-    where date_dim_id = p_date_dim_id;
+    from dbo.state_ownership_access_fact
+    where date_dim_id = (select date_dim_id from dbo.date_dim where full_date = p_full_date );
 
     insert into dbo.hospital_access_fact (
          date_dim_id
@@ -17,7 +39,7 @@ begin
         ,quality_score
     )
     select 
-         p_date_dim_id as date_dim_id
+         v_date_dim_id as date_dim_id
         ,h.hospital_dim_id
         ,MIN(c.county_dim_id) as county_dim_id
 		,hospital_type_dim_id
@@ -59,8 +81,8 @@ begin
 
     from dbo.hospital_dim h
     inner join dbo.county_dim c 
-      on c.county_name = h.county_name
-	  and c.state_code = h.state_code
+      on lower(c.county_name) = lower(h.county_name)
+	  and lower(c.state_code) = lower(h.state_code)
 	  and c.current_flag = 'Y'
 	inner join staging.hospital s
       on s.facility_id = h.facility_id
@@ -72,5 +94,18 @@ begin
         ,h.overall_rating_2025
         ,h.birthing_friendly_flag_2025
 		,ht.hospital_type_dim_id;
+		
+		
+	get diagnostics v_rows_inserted = row_count;
+
+    perform etl.log_etl_event(
+        'Load hospital_access_fact',
+        'dbo.hospital_access_fact',
+        'I',
+        v_rows_inserted,
+        'success',
+        'Finished hospital_access_fact snapshot for date_dim_id=' || p_full_date,
+        null
+    );
 end;
 $$;

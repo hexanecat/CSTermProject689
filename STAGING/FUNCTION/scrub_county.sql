@@ -53,7 +53,7 @@ begin
          or (c.poverty_rate_0_17 is not null
              and not public.is_numeric(c.poverty_rate_0_17::text))
          or (c.deep_poverty_rate is not null
-             anii not public.is_numeric(c.deep_poverty_rate::text))
+             and not public.is_numeric(c.deep_poverty_rate::text))
       );
 
 
