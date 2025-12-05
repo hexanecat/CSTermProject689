@@ -7,6 +7,14 @@ This is the constellation design of my term project for CS689. The goal here is 
 
 The data flow life cycle looks something like this 
 
+
+
+[Term Project Data Flow Diagram.pdf](https://github.com/user-attachments/files/23945989/Term.Project.Data.Flow.Diagram.pdf)
+
+
+
+
+
 1) bulk insert into staging.hospital and staging.county 
     -the target attributes we are getting from the file are found in map.header_targetcolumn
     -this will extract the corresponding attributes and insert them accordingly into the specified staging tables
