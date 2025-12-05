@@ -9,7 +9,8 @@ The data flow life cycle looks something like this
 
 
 
-[Term Project Data Flow Diagram.pdf](https://github.com/user-attachments/files/23945989/Term.Project.Data.Flow.Diagram.pdf)
+<img width="4960" height="1760" alt="Term Project Data Flow Diagram" src="https://github.com/user-attachments/assets/e7448dc9-296b-4842-ad44-073bffc71bc8" />
+
 
 
 
