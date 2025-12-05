@@ -58,5 +58,8 @@ FACT
 STAGING
   -basic transactional tables that will serve as the starting point for getting data into the database and allowing us to start performing transformations/changes via SQL
 
+DOCK
+    -basic transactional table that will serve as starting point for getting the data into the database for county before we pivot and shape the data via SQL
+
 
 
