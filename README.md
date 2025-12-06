@@ -8,9 +8,7 @@ This is the constellation design of my term project for CS689. The goal here is 
 
 The data flow life cycle looks something like this 
 
-
-
-<img width="4960" height="1760" alt="Term Project Data Flow Diagram" src="https://github.com/user-attachments/assets/e7448dc9-296b-4842-ad44-073bffc71bc8" />
+<img width="4960" height="1760" alt="Term Project Data Flow Diagram (1)" src="https://github.com/user-attachments/assets/39d873dc-2aa1-4502-ba56-75c7fb173ee4" />
 
 
 
