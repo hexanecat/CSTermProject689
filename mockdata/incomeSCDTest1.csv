@@ -1,0 +1,132 @@
+FIPS,State,County,Attribute,Value
+0,US,United States,Median_HH_Inc_ACS,69021
+0,US,United States,PerCapitaInc,37638
+0,US,United States,Poverty_Rate_0_17_ACS,17.04670519
+0,US,United States,Poverty_Rate_ACS,12.63185031
+0,US,United States,Deep_Pov_All,5.777384811
+0,US,United States,Deep_Pov_Children,7.691714615
+0,US,United States,NumAll_inPOV_ACS,40661636
+0,US,United States,PCTPOV017,16.9
+0,US,United States,POV017,12243219
+0,US,United States,MedHHInc,69717
+0,US,United States,POVALL,41393176
+0,US,United States,PCTPOVALL,12.8
+0,US,United States,Num_inPOV_0_17_ACS,12443424
+1000,AL,Alabama,Median_HH_Inc_ACS,54943
+1000,AL,Alabama,PerCapitaInc,30458
+1000,AL,Alabama,Poverty_Rate_0_17_ACS,22.26193645
+1000,AL,Alabama,Poverty_Rate_ACS,15.78512663
+1000,AL,Alabama,Deep_Pov_All,7.077315889
+1000,AL,Alabama,Deep_Pov_Children,10.39058157
+1000,AL,Alabama,NumAll_inPOV_ACS,769819
+1000,AL,Alabama,PCTPOV017,22.7
+1000,AL,Alabama,POV017,250327
+1000,AL,Alabama,MedHHInc,53990
+1000,AL,Alabama,POVALL,800848
+1000,AL,Alabama,PCTPOVALL,16.3
+1000,AL,Alabama,Num_inPOV_0_17_ACS,245896
+1001,AL,Autauga,Median_HH_Inc_ACS,62660
+1001,AL,Autauga,PerCapitaInc,30968
+1001,AL,Autauga,Poverty_Rate_0_17_ACS,18.67386389
+1001,AL,Autauga,Poverty_Rate_ACS,13.57847378
+1001,AL,Autauga,Deep_Pov_All,6.2502163
+1001,AL,Autauga,Deep_Pov_Children,8.592895178
+1001,AL,Autauga,NumAll_inPOV_ACS,7847
+1001,AL,Autauga,PCTPOV017,16.1
+1001,AL,Autauga,POV017,2199
+1001,AL,Autauga,MedHHInc,66444
+1001,AL,Autauga,POVALL,6296
+1001,AL,Autauga,PCTPOVALL,10.7
+1001,AL,Autauga,Num_inPOV_0_17_ACS,2560
+1003,AL,Baldwin,Median_HH_Inc_ACS,64346
+1003,AL,Baldwin,PerCapitaInc,35384
+1003,AL,Baldwin,Poverty_Rate_0_17_ACS,11.29982166
+1003,AL,Baldwin,Poverty_Rate_ACS,9.204904993
+1003,AL,Baldwin,Deep_Pov_All,4.043401319
+1003,AL,Baldwin,Deep_Pov_Children,5.503711999
+1003,AL,Baldwin,NumAll_inPOV_ACS,20598
+1003,AL,Baldwin,PCTPOV017,16.4
+1003,AL,Baldwin,POV017,8207
+1003,AL,Baldwin,MedHHInc,65658
+1003,AL,Baldwin,POVALL,25526
+1003,AL,Baldwin,PCTPOVALL,10.8
+1003,AL,Baldwin,Num_inPOV_0_17_ACS,5449
+1005,AL,Barbour,Median_HH_Inc_ACS,36422
+1005,AL,Barbour,PerCapitaInc,21325
+1005,AL,Barbour,Poverty_Rate_0_17_ACS,43.74401226
+1005,AL,Barbour,Poverty_Rate_ACS,26.47191011
+1005,AL,Barbour,Deep_Pov_All,12.82696629
+1005,AL,Barbour,Deep_Pov_Children,26.72925848
+1005,AL,Barbour,NumAll_inPOV_ACS,5890
+1005,AL,Barbour,PCTPOV017,35.1
+1005,AL,Barbour,POV017,1776
+1005,AL,Barbour,MedHHInc,38649
+1005,AL,Barbour,POVALL,5089
+1005,AL,Barbour,PCTPOVALL,23
+1005,AL,Barbour,Num_inPOV_0_17_ACS,2283
+1007,AL,Bibb,Median_HH_Inc_ACS,54277
+1007,AL,Bibb,PerCapitaInc,24787
+1007,AL,Bibb,Poverty_Rate_0_17_ACS,28.04290718
+1007,AL,Bibb,Poverty_Rate_ACS,16.94285714
+1007,AL,Bibb,Deep_Pov_All,9.076190476
+1007,AL,Bibb,Deep_Pov_Children,17.51313485
+1007,AL,Bibb,NumAll_inPOV_ACS,3558
+1007,AL,Bibb,PCTPOV017,29
+1007,AL,Bibb,POV017,1275
+1007,AL,Bibb,MedHHInc,48454
+1007,AL,Bibb,POVALL,4204
+1007,AL,Bibb,PCTPOVALL,20.6
+1007,AL,Bibb,Num_inPOV_0_17_ACS,1281
+1009,AL,Blount,Median_HH_Inc_ACS,52830
+1009,AL,Blount,PerCapitaInc,27309
+1009,AL,Blount,Poverty_Rate_0_17_ACS,17.28166827
+1009,AL,Blount,Poverty_Rate_ACS,13.23663049
+1009,AL,Blount,Deep_Pov_All,5.291223017
+1009,AL,Blount,Deep_Pov_Children,6.344745988
+1009,AL,Blount,NumAll_inPOV_ACS,7720
+1009,AL,Blount,PCTPOV017,16.7
+1009,AL,Blount,POV017,2236
+1009,AL,Blount,MedHHInc,56894
+1009,AL,Blount,POVALL,6992
+1009,AL,Blount,PCTPOVALL,12
+1009,AL,Blount,Num_inPOV_0_17_ACS,2337
+1010,AL,Gary,Num_inPOV_0_17_ACS,2337
+99999,ZZ,InvalidState,Median_HH_Inc_ACS,NOT_A_NUMBER
+99999,ZZ,InvalidState,PerCapitaInc,ABC123
+99999,ZZ,InvalidState,Poverty_Rate_0_17_ACS,12.34.56
+99999,ZZ,InvalidState,Poverty_Rate_ACS,#VALUE!
+99999,ZZ,InvalidState,Deep_Pov_All,12,345
+99999,ZZ,InvalidState,Deep_Pov_Children,12.3.4
+99999,ZZ,InvalidState,NumAll_inPOV_ACS,N/A
+99999,ZZ,InvalidState,PCTPOV017,NULL
+99999,ZZ,InvalidState,POV017,
+99999,ZZ,InvalidState,MedHHInc,12.3.4.5
+99999,ZZ,InvalidState,POVALL,12-34
+99999,ZZ,InvalidState,PCTPOVALL,ABC
+99999,ZZ,InvalidState,Num_inPOV_0_17_ACS,XYZ
+99998,XX,BadState1,Median_HH_Inc_ACS,12A
+99998,XX,BadState1,PerCapitaInc,12B
+99998,XX,BadState1,Poverty_Rate_0_17_ACS,12C
+99998,XX,BadState1,Poverty_Rate_ACS,12D
+99998,XX,BadState1,Deep_Pov_All,12E
+99998,XX,BadState1,Deep_Pov_Children,12F
+99998,XX,BadState1,NumAll_inPOV_ACS,12G
+99998,XX,BadState1,PCTPOV017,12H
+99998,XX,BadState1,POV017,12I
+99998,XX,BadState1,MedHHInc,12J
+99998,XX,BadState1,POVALL,12K
+99998,XX,BadState1,PCTPOVALL,12L
+99998,XX,BadState1,Num_inPOV_0_17_ACS,12M
+99997,YY,BadState2,Median_HH_Inc_ACS,
+99997,YY,BadState2,PerCapitaInc,
+99997,YY,BadState2,Poverty_Rate_0_17_ACS,
+99997,YY,BadState2,Poverty_Rate_ACS,
+99997,YY,BadState2,Deep_Pov_All,
+99997,YY,BadState2,Deep_Pov_Children,
+99997,YY,BadState2,NumAll_inPOV_ACS,
+99997,YY,BadState2,PCTPOV017,
+99997,YY,BadState2,POV017,
+99997,YY,BadState2,MedHHInc,
+99997,YY,BadState2,POVALL,
+99997,YY,BadState2,PCTPOVALL,
+99997,YY,BadState2,Num_inPOV_0_17_ACS,

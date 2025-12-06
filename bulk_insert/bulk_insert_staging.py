@@ -59,7 +59,7 @@ def truncate_staging_tables(engine):
     try:
         with engine.begin() as conn:
             # truncate tables dynamically via truncate sproc
-            conn.execute(text("SELECT truncate_staging_tables();"))
+            conn.execute(text("call truncate_staging_tables();"))
     except Exception as e:
         print(f"Error: {e}")
 
@@ -90,11 +90,11 @@ def insert_data_into_staging(engine, df, targetTable, fileName, processName, tar
 
 def main():
     #read in each file both the hospital data and the income data from the csvs we have generated
-    hospitalFile = "mockdata/Hospital_General_Information_updated2.csv"
+    hospitalFile = "mockdata/Hospital_General_Information_updatedSCDTest1.csv"
     hospitalFileName = os.path.basename(hospitalFile)
     hospital_df = pd.read_csv(hospitalFile)
 
-    countyFile = "mockdata/Income.csv"
+    countyFile = "mockdata/IncomeSCDTest1.csv"
     countyFileName = os.path.basename(countyFile)
     county_df = pd.read_csv(countyFile, encoding="latin1", on_bad_lines="skip")
 
@@ -105,7 +105,7 @@ def main():
     password = "ibettergetanA"
     host = "localhost"
     port = "5432"
-    database = "TermProject"
+    database = "TermProjectDemo"
 
     #build engine to be able to connect to the postgres database
     engine = create_engine(f'postgresql+psycopg2://{username}:{password}@{host}:{port}/{database}')
@@ -132,6 +132,7 @@ def main():
     #once tables are truncated continue on to the next step
     #start inserting data into the staging table
     try:    
+        #insert into staging first
         insert_data_into_staging(engine, hospital_stage_df, 'hospital', hospitalFileName, 'insert into staging','staging')
         insert_data_into_staging(engine, county_stage_df, 'county', countyFileName, 'insert into dock','dock')
     except Exception as e:
@@ -141,6 +142,5 @@ def main():
     #when we are done using the engine at the end just dispose and get rid of it
     finally:
         engine.dispose()
-
 if __name__ == "__main__":
     main()

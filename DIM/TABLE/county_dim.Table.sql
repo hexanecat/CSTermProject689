@@ -10,9 +10,12 @@ CREATE TABLE dbo.county_dim (
 	poverty_band           	   VARCHAR(20),
 	income_band                VARCHAR(20),
 	deep_poverty_band          VARCHAR(30),
-    -- record_hash               CHAR(32), --using this in the future for determining when to update the record hash columns
-    -- SCD2 attributes that are going to need to be the rows we change if there is new data
+    record_hash                TEXT,
+    -- SCD2 attributes (valid time - when data was true in real world)
     scd2_start_date             DATE NOT NULL,
     scd2_end_date               DATE NOT NULL,
-    current_flag               CHAR(1) NOT NULL CHECK (current_flag IN ('Y','N'))
+    current_flag               CHAR(1) NOT NULL CHECK (current_flag IN ('Y','N')),
+    -- Bitemporal: transaction time (when data was recorded in database)
+    transaction_start_date      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    transaction_end_date        TIMESTAMP NOT NULL DEFAULT '9999-12-31 23:59:59'::TIMESTAMP
 );

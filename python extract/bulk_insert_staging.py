@@ -136,7 +136,7 @@ def main():
         insert_data_into_staging(engine, hospital_stage_df, 'hospital', hospitalFileName, 'insert into staging','staging')
         #remember i have to insert into preprocessing table first so that is why we are aiming to do a dock instead
 	#dataflow here will be dock and then it will be staging. python will handle the doc
-	insert_data_into_staging(engine, county_stage_df, 'county', countyFileName, 'insert into ','dock')
+insert_data_into_staging(engine, county_stage_df, 'county', countyFileName, 'insert into ','dock')
     except Exception as e:
         #cast the error message as
         error_msg = str(e)

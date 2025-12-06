@@ -18,7 +18,8 @@ begin
 	--handle SCD type 2 first, we need to close out rows where the record hash has changed
 	update dbo.county_dim d
 	set scd2_end_date = current_date - 1,
-		current_flag  = 'N'
+		current_flag  = 'N',
+		transaction_end_date = CURRENT_TIMESTAMP  -- Close transaction time (bitemporal)
 	from staging.county s
 	where s.processed_flag = 1
 		and d.fips_code = s.fips_code 
@@ -54,6 +55,8 @@ begin
 		,scd2_start_date
 		,scd2_end_date
 		,current_flag
+		,transaction_start_date
+		,transaction_end_date
 		)
 	select
 		  s.fips_code
@@ -67,6 +70,8 @@ begin
         , current_date                            as scd2_start_date
         , date '9999-12-31'                       as scd2_end_date
         , 'Y'                                     as current_flag
+        , CURRENT_TIMESTAMP                       as transaction_start_date  -- Bitemporal
+        , '9999-12-31 23:59:59'::TIMESTAMP        as transaction_end_date    -- Bitemporal
 	from staging.county s
 	where s.processed_flag = 1
 	and not exists (

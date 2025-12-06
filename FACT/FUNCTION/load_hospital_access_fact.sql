@@ -3,6 +3,7 @@ returns void language plpgsql as $$
 declare
     v_rows_inserted integer:=0;
 	v_date_dim_id integer;
+	v_insert_date_dim_id integer;
 begin
 	perform etl.log_etl_event(
 	'load hospital access fact started',
@@ -18,6 +19,12 @@ begin
    from dbo.date_dim
    where full_date = p_full_date;
    
+   -- Get today's date_dim_id for the insert date
+   --role playing dimension so we can have a idea of when this data was from
+   select date_dim_id into v_insert_date_dim_id
+   from dbo.date_dim
+   where full_date = CURRENT_DATE;
+   
    --bad handle it
    if v_date_dim_id is null then
       raise exception 'Date % not found in date_dim table. please use a valid date from the time dim', p_full_date;
@@ -30,6 +37,7 @@ begin
 
     insert into dbo.hospital_access_fact (
          date_dim_id
+        ,fact_insert_date_dim_id
         ,hospital_dim_id
         ,county_dim_id
 		,hospital_type_dim_id
@@ -40,6 +48,7 @@ begin
     )
     select 
          v_date_dim_id as date_dim_id
+        ,v_insert_date_dim_id as fact_insert_date_dim_id
         ,h.hospital_dim_id
         ,MIN(c.county_dim_id) as county_dim_id
 		,hospital_type_dim_id
