@@ -33,25 +33,13 @@ insert into staging.county (
 		you could probably use min here and it would be the same function
 	*/
 	select
-		 s.fips_code::char(5)
-		,s.state_code::char(2)
-		,s.county_name
-		,MAX(case 
-				when s.attribute = 'Median_HH_Inc_ACS'
-					then NULLIF(s.value, '')::numeric(12,2)
-				end) as median_household_income
-		,MAX(case 
-				when s.attribute = 'Poverty_Rate_ACS'
-					then NULLIF(s.value, '')::numeric(6, 4)
-				end) as poverty_rate
-		,MAX(case 
-				when s.attribute = 'Poverty_Rate_0_17_ACS'
-					then NULLIF(s.value, '')::numeric(6, 4)
-				end) as poverty_rate_0_17
-		,MAX(case 
-				when s.attribute = 'Deep_Pov_All'
-					then NULLIF(s.value, '')::numeric(6, 4)
-				end) as deep_poverty_rate
+          s.fips_code::text as fips_code
+        , s.state_code::text as state_code
+        , s.county_name::text as county_name
+        , max(case when s.attribute = 'Median_HH_Inc_ACS' then nullif(s.value, '') end)::text as median_household_income
+        , max(case when s.attribute = 'Poverty_Rate_ACS' then nullif(s.value, '') end)::text as poverty_rate
+        , max(case when s.attribute = 'Poverty_Rate_0_17_ACS' then nullif(s.value, '') end)::text as poverty_rate_0_17
+        , max(case when s.attribute = 'Deep_Pov_All' then nullif(s.value, '') end)::text as deep_poverty_rate
 	from dock.county s
 	--and for the pivot this is the key piece beacuse i want to group EVERYTHING together at the grain of FIPS code, state_code and county
 	--I only want a single row for that grain

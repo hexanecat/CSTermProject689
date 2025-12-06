@@ -1,0 +1,52 @@
+--basic cte to get the hospitals rank with the highest risk index
+with hospital_ranks as (
+    select 
+        hospital_dim_id,
+        county_dim_id,
+        risk_access_index,
+        row_number() over (order by risk_access_index desc) as overall_rank,
+        row_number() over (partition by county_dim_id order by risk_access_index desc) as county_rank
+    from dbo.hospital_access_fact
+),
+--a basic ste to get the statistics at the county level
+county_stats as (
+    select 
+        c.county_dim_id,
+        c.county_name,
+        c.state_code,
+        c.median_household_income,
+        c.poverty_band,
+        count(h.hospital_dim_id) as hospitals_in_county,
+        avg(h.risk_access_index) as avg_county_risk
+    from dbo.county_dim c
+    inner join dbo.hospital_access_fact h 
+    	on c.county_dim_id = h.county_dim_id
+    group by c.county_dim_id, c.county_name, c.state_code, c.median_household_income, c.poverty_band
+),
+--cte for poverty band, go ahead and combine these all together analytical
+poverty_analysis as (
+    select 
+        poverty_band,
+        round(avg(median_household_income), 2) as avg_income,
+        count(distinct county_dim_id) as counties_in_band
+    from dbo.county_dim
+    group by poverty_band
+)
+select 
+    hr.overall_rank as risk_rank,
+    hr.county_rank as risk_rank_in_county,
+    hr.hospital_dim_id,
+    hr.risk_access_index,
+    cs.county_name,
+    cs.state_code,
+    cs.hospitals_in_county,
+    cs.avg_county_risk,
+    cs.median_household_income,
+    cs.poverty_band,
+    pa.avg_income,
+    round(cs.median_household_income - pa.avg_income, 2) as income_vs_band_avg
+from hospital_ranks hr
+inner join county_stats cs on hr.county_dim_id = cs.county_dim_id
+inner join poverty_analysis pa on cs.poverty_band = pa.poverty_band
+where hr.overall_rank <= 50
+order by hr.overall_rank asc;

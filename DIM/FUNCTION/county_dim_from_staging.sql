@@ -73,7 +73,7 @@ begin
 		select 1
 		from dbo.county_dim d
 		where d.fips_code    = s.fips_code
-		  and d.current_flag = 'y'
+		  and d.current_flag = 'Y'
 		  and d.record_hash  = s.record_hash
       );
 	  

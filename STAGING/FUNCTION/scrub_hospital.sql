@@ -5,6 +5,8 @@ as $$
 declare
     v_rows_processed integer := 0;
     v_rows_bad       integer := 0;
+    v_zip_bad_count  integer := 0;
+    v_birthing_bad_count integer := 0;
 begin
     -- log the start of the scrub
     perform etl.log_etl_event(
@@ -19,14 +21,62 @@ begin
 
     -- ensure the zip is 5 chars and not anything more
     --WORK ON HANDLING BAD ZIP CODE VALUES 
-    update staging.hospital h
-    set zip_code = substring(h.zip_code from 1 for 5)
-    where h.zip_code is not null
-      and h.processed_flag = 0;
-  
+ with bad_zip_rows as (
+        select h.*,
+               case 
+                   when h.zip_code is null then 'zip code is null'
+                   when length(btrim(h.zip_code)) != 5 then 'zip code must be exactly 5 characters'
+                   when not h.zip_code ~ '^[0-9]{5}$' then 'zip code must contain only digits'
+                   else 'invalid zip code format'
+               end as reason
+        from staging.hospital h
+        where h.processed_flag = 0
+          and (
+               h.zip_code is null 
+               or length(btrim(h.zip_code)) != 5
+               or not h.zip_code ~ '^[0-9]{5}$'
+          )
+    ),
+    moved_zip as (
+        insert into staging.hospital_infirmary (row_data, reason)
+        select to_jsonb(bz.*), bz.reason
+        from bad_zip_rows bz
+        returning *
+    )
+    select count(*) into v_zip_bad_count
+    from moved_zip;
     
+    -- delete invalid zip code rows from staging
+    delete from staging.hospital h
+    where h.processed_flag = 0
+      and (
+           h.zip_code is null 
+           or length(btrim(h.zip_code)) != 5
+           or not h.zip_code ~ '^[0-9]{5}$'
+      );
 
+    -- log if any bad zip rows were moved
+    if v_zip_bad_count > 0 then
+        perform etl.log_etl_event(
+            'scrub_hospital_staging',
+            'staging.hospital',
+            'scrub',
+            v_zip_bad_count,
+            'warning',
+            format(
+                'moved %s rows with invalid zip codes to staging.hospital_infirmary',
+                v_zip_bad_count
+            ),
+            null
+        );
+    end if;
 
+    -- ensure remaining rows match out fit there 
+    update staging.hospital h
+    set zip_code = substring(btrim(h.zip_code) from 1 for 5)
+    where h.processed_flag = 0
+      and h.zip_code is not null
+      and h.zip_code ~ '^[0-9]{5,}$';
 
   -- update emergency flags per the emergency services values given
     update staging.hospital h
@@ -44,7 +94,7 @@ begin
       and h.emergency_flag is distinct from 0;
 
     --we need to handle staging.hospital_infirmary
-    with bad_rows as (
+    with bad_emergency_rows as (
         select h.*,
                'invalid emergency flag value found, unmapped source value' as reason
         from staging.hospital h
@@ -53,14 +103,14 @@ begin
           and h.emergency_flag is distinct from 1 
           and h.emergency_flag is distinct from 0
     ),
-    moved as (
+    moved_emergency as (
         insert into staging.hospital_infirmary (row_data, reason)
         select to_jsonb(br.*), br.reason
-        from bad_rows br
+        from bad_emergency_rows br
         returning *
     )
 	select count(*) into v_rows_bad
-    from moved;
+    from moved_emergency;
 	
 	-- delete those bad rows from staging, once removed from staging table
 	delete from staging.hospital h
@@ -93,7 +143,47 @@ begin
       and h.processed_flag = 0;
 	  
    --if the birthing friendly designation not match from the calues in the lookup go ahead and get rid of those too
-   --FIGURE THIS PIECE OUT TOOO
+ -- Handle unmapped birthing friendly values
+    with bad_birthing_rows as (
+        select h.*,
+               'invalid birthing friendly designation, unmapped source value' as reason
+        from staging.hospital h
+        where h.processed_flag = 0
+          and h.birthing_friendly_flag is distinct from 1
+          and h.birthing_friendly_flag is distinct from 0
+          and h.birthing_friendly_designation is not null
+    ),
+    moved_birthing as (
+        insert into staging.hospital_infirmary (row_data, reason)
+        select to_jsonb(bbr.*), bbr.reason
+        from bad_birthing_rows bbr
+        returning *
+    )
+    select count(*) into v_birthing_bad_count
+    from moved_birthing;
+    
+    -- delete unmapped birthing friendly rows from staging
+    delete from staging.hospital h
+    where h.processed_flag = 0
+      and h.birthing_friendly_flag is distinct from 1
+      and h.birthing_friendly_flag is distinct from 0
+      and h.birthing_friendly_designation is not null;
+    
+    -- log if any bad birthing rows were moved
+    if v_birthing_bad_count > 0 then
+        perform etl.log_etl_event(
+            'scrub_hospital_staging',
+            'staging.hospital',
+            'scrub',
+            v_birthing_bad_count,
+            'warning',
+            format(
+                'moved %s rows with unmapped birthing friendly values to staging.hospital_infirmary',
+                v_birthing_bad_count
+            ),
+            null
+        );
+    end if;
 
     -- hospital ownership buckets
     update staging.hospital h
