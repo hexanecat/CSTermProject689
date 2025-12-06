@@ -1,4 +1,5 @@
-<img width="1831" height="1022" alt="image" src="https://github.com/user-attachments/assets/c9231c1c-631e-41e9-a460-3a4cf7652bbf" />
+
+<img width="1831" height="1022" alt="constellationfinal" src="https://github.com/user-attachments/assets/fd44b23f-28d5-4066-b7f5-34ede2b4aa9a" />
 
 
 This is the constellation design of my term project for CS689. The goal here is to ingest two different data sources
